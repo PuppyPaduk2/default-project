@@ -8,15 +8,10 @@ const mode = 'development'; // development | production
 let devtool = 'source-map';
 const result = [];
 
-if (mode === 'production') {
-  devtool = undefined;
-}
-
-if (ENV.CLIENT_SIDE === 'true') {
-  const modulesDirPath = `${__dirname}${ENV.PATH_MODULES}`;
-  const entry = fs.readdirSync(modulesDirPath).reduce((res, path) => {
-    const checkPath = `${modulesDirPath}/${path}`;
-    const checkClientPath = `${checkPath}/client.js`;
+const getEntry = (pathDir, addCheckPath = '') => fs.readdirSync(pathDir)
+  .reduce((res, path) => {
+    const checkPath = `${pathDir}/${path}`;
+    const checkClientPath = `${checkPath}${addCheckPath}`;
 
     if (
       fs.lstatSync(checkPath).isDirectory()
@@ -27,6 +22,14 @@ if (ENV.CLIENT_SIDE === 'true') {
 
     return res;
   }, {});
+
+if (mode === 'production') {
+  devtool = undefined;
+}
+
+if (ENV.CLIENT_SIDE === 'true') {
+  const modulesDirPath = `${__dirname}${ENV.PATH_MODULES}`;
+  const entry = getEntry(modulesDirPath, '/client.js');
 
   if (Object.keys(entry).length) {
     result.push(
@@ -57,23 +60,26 @@ if (ENV.CLIENT_SIDE === 'true') {
 }
 
 if (ENV.SERVER_SIDE === 'true') {
-  result.push(
-    createConfig({
-      entry: {
-        index: './src/server/index.js',
-      },
-      output: {
-        path: `${__dirname}/dist/server`,
-      },
-      mode,
-      devtool,
-      target: 'node',
-      externals: ['uws'],
-      stats: {
-        warnings: false,
-      },
-    }),
-  );
+  const servicesDirPath = `${__dirname}${ENV.PATH_SERVICES}`;
+  const entry = getEntry(servicesDirPath, '/index.js');
+
+  if (Object.keys(entry).length) {
+    result.push(
+      createConfig({
+        entry,
+        output: {
+          path: `${__dirname}/dist/server`,
+        },
+        mode,
+        devtool,
+        target: 'node',
+        externals: ['uws'],
+        stats: {
+          warnings: false,
+        },
+      }),
+    );
+  }
 }
 
 module.exports = result;

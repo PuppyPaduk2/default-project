@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack",
     "build-watch": "webpack --watch",
-    "start": "node dist/server/index.js",
-    "start-watch": "nodemon dist/server/index.js"
+    "start": "node dist/server/main.js",
+    "start-watch": "nodemon dist/server/main.js"
   },
   "repository": {
     "type": "git",
