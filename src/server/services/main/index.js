@@ -1,7 +1,7 @@
 import React from 'react';
 import { createService } from '../../core';
 import { server as clientServer } from '../../../client/core/app';
-import Main from '../../../client/modules/main';
+import Main from '../../../client/services/main';
 
 createService(({ app, express, ENV }) => {
   app.use(express.json());
