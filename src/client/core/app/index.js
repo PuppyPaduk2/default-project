@@ -1,16 +1,16 @@
-import AppExport from './App';
-import clientExport from './client';
-import htmlExport from './html';
-import serverExport from './server';
+import React from 'react';
+import { ThemeProvider } from 'react-jss';
 
-export const App = AppExport;
-export const client = clientExport;
-export const html = htmlExport;
-export const server = serverExport;
+const app = ({ children, theme }) => {
+  if (theme) {
+    return (
+      <ThemeProvider theme={theme}>
+        {children || null}
+      </ThemeProvider>
+    );
+  }
 
-export default {
-  App,
-  client,
-  html,
-  server,
+  return children || null;
 };
+
+export default app;

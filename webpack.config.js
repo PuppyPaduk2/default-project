@@ -28,7 +28,7 @@ if (mode === 'production') {
 }
 
 if (ENV.CLIENT_SIDE === 'true') {
-  const modulesDirPath = `${__dirname}${ENV.PATH_MODULES}`;
+  const modulesDirPath = `${__dirname}${ENV.PATH_CLIENT_SERVICES}`;
   const entry = getEntry(modulesDirPath, '/client.js');
 
   if (Object.keys(entry).length) {
@@ -60,7 +60,7 @@ if (ENV.CLIENT_SIDE === 'true') {
 }
 
 if (ENV.SERVER_SIDE === 'true') {
-  const servicesDirPath = `${__dirname}${ENV.PATH_SERVICES}`;
+  const servicesDirPath = `${__dirname}${ENV.PATH_SERVER_SERVICES}`;
   const entry = getEntry(servicesDirPath, '/index.js');
 
   if (Object.keys(entry).length) {

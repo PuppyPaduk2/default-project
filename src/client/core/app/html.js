@@ -6,9 +6,10 @@ export default props => `
     <title>${props.title || ''}</title>
   </head>
 
-  <body style="padding: 0; margin: 0;">
+  <body>
     <div id="root">${props.content}</div>
   </body>
+
   ${(props.modules || []).map(path => `<script src="${path}.js"></script>`).join('\n')}
 </html>
 `;

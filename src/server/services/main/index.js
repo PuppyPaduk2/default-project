@@ -1,24 +1,17 @@
 import React from 'react';
-import express from 'express';
-import http from 'http';
-import dotenv from 'dotenv';
-import { server as clientServer } from '../../../client/core/app';
-import Main from '../../../client/modules/main';
+import { createService } from '../../core';
+import clientServer from '../../../client/core/app/server';
+import Main from '../../../client/services/main';
+import theme from '../../../client/core/themes';
 
-const app = express();
-const httpServer = http.Server(app);
-const ENV = dotenv.config().parsed;
+createService(({ app, express, ENV }) => {
+  app.use(express.json());
+  app.use(express.static(ENV.PATH_STATIC));
+  app.get('/favicon.ico', (req, res) => res.sendStatus(404));
 
-app.use(express.json());
-app.use(express.static(ENV.PATH_STATIC));
-app.get('/favicon.ico', (req, res) => res.sendStatus(404));
-
-app.get('/', (req, res) => {
-  res.send(clientServer(() => <Main />, {
-    modules: ['main'],
-  }));
-});
-
-httpServer.listen(ENV.PORT, () => {
-  console.log(`Example app listening on port ${ENV.PORT}!`);
+  app.get('/main', (req, res) => {
+    res.send(clientServer(() => <Main />, {
+      modules: ['main'],
+    }, { theme }));
+  });
 });
