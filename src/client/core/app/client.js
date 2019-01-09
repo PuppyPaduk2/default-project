@@ -2,11 +2,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from '.';
 
-export default (content) => {
+export default (content, props = {}) => {
   ReactDOM.hydrate(
-    <App>{content && content()}</App>,
+    <App {...props}>
+      {content && content()}
+    </App>,
     document.getElementById('root'),
   );
 };
